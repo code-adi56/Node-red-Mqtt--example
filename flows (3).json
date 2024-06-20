@@ -1,0 +1,1152 @@
+[
+    {
+        "id": "a23054f590883c0b",
+        "type": "tab",
+        "label": "Flow 5",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bb6254de06f23624",
+        "type": "inject",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"Admin\":\"Adishree\",\"DeviceId\":\"D10900\",\"CustomerName\":\"Kasmiri sweets\",\"Location\":\"bbsr to puri\"}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "857e55cf6631a2ce"
+            ]
+        ]
+    },
+    {
+        "id": "2438c8a3286f2665",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "8e278e9e2ea9275e",
+        "order": 2,
+        "width": 30,
+        "height": 1,
+        "name": "",
+        "label": "Admin:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 680,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "92cb4a9234903c9a",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "8e278e9e2ea9275e",
+        "order": 1,
+        "width": 30,
+        "height": 1,
+        "name": "",
+        "label": "Device  Id:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 640,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "71413c56d79235d0",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "8e278e9e2ea9275e",
+        "order": 4,
+        "width": 30,
+        "height": 1,
+        "name": "",
+        "label": "Location",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 640,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "2de174478797b361",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "8e278e9e2ea9275e",
+        "order": 3,
+        "width": 30,
+        "height": 1,
+        "name": "",
+        "label": "Customer Name:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 670,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "857e55cf6631a2ce",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 3",
+        "func": "let input = msg.payload;\nlet Admin = input[\"Admin\"];\nlet DeviceId = input[\"DeviceId\"];\nlet CustomerName = input[\"CustomerName\"];\nlet Location = input[\"Location\"];\n\nglobal.set(\"Admin\", Admin.toString());\nglobal.set(\"DeviceId\", DeviceId.toString());\nglobal.set(\"CustomerName\", CustomerName.toString());\nglobal.set(\"Location\", Location.toString());\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 100,
+        "wires": [
+            [
+                "406b303f1d84e47f",
+                "7e803bfcfc7ae939",
+                "dde08645314808e1",
+                "e8b199907f5ba75d"
+            ]
+        ]
+    },
+    {
+        "id": "406b303f1d84e47f",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 4",
+        "func": "msg.payload = global.get(\"Admin\").toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 60,
+        "wires": [
+            [
+                "2438c8a3286f2665",
+                "bc1e214285e82efa"
+            ]
+        ]
+    },
+    {
+        "id": "7e803bfcfc7ae939",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 6",
+        "func": "msg.payload = global.get(\"DeviceId\").toString();\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 140,
+        "wires": [
+            [
+                "92cb4a9234903c9a"
+            ]
+        ]
+    },
+    {
+        "id": "dde08645314808e1",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 7",
+        "func": "msg.payload = global.get(\"CustomerName\").toString();\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 180,
+        "wires": [
+            [
+                "2de174478797b361"
+            ]
+        ]
+    },
+    {
+        "id": "e8b199907f5ba75d",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 8",
+        "func": "\nmsg.payload = global.get(\"Location\").toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 220,
+        "wires": [
+            [
+                "71413c56d79235d0"
+            ]
+        ]
+    },
+    {
+        "id": "bc1e214285e82efa",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "063008a0493335e8",
+        "type": "inject",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"Temperature\":\"45\",\"Humidity\":\"45\",\"Location\":\"Bhubaneswar to Puri\",\"GPS_Coordinates\":{\"latitude\":55.7128,\"longitude\":-74.006}}",
+        "payloadType": "json",
+        "x": 90,
+        "y": 300,
+        "wires": [
+            [
+                "0d2f4b2b3472f352"
+            ]
+        ]
+    },
+    {
+        "id": "0d2f4b2b3472f352",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 26",
+        "func": "const inputPayload = msg.payload;\nconst Temperature = inputPayload[\"aTemperature\"];\nconst Humidity = inputPayload[\"aHumidity\"];\n// const GPS = inputPayload[\"GPS_Coordinates\"];\n// let Location = inputPayload[\"Location\"];\n\n// global.set(\"Temperature\", Temperature);\n// global.set(\"Humidity\", Humidity);\n// global.set(\"Location\", Location.toString());\n// global.set(\"Latitude\", GPS.latitude);\n// global.set(\"Longitude\", GPS.longitude);\n// return msg;\nmsg.payload = {\n    Temperature: parseFloat(Temperature),\n    Humidity: parseFloat(Humidity),\n    // N: parseFloat(SoilNitrogen),\n    // P: parseFloat(SoilPhosphorous),\n    // K: parseFloat(SoilPotassium)\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 300,
+        "wires": [
+            [
+                "8f7b71290aa3f7a5",
+                "a33879d387688f3b",
+                "f5341764404c16fe",
+                "6817b6ce844b5819"
+            ]
+        ]
+    },
+    {
+        "id": "8768086e634672e9",
+        "type": "ui_worldmap",
+        "z": "a23054f590883c0b",
+        "group": "b4b45b616c3383eb",
+        "order": 1,
+        "width": 10,
+        "height": 6,
+        "name": "",
+        "lat": "40.7128",
+        "lon": "-74.006",
+        "zoom": "",
+        "layer": "OSMG",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "hide",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "true",
+        "coords": "deg",
+        "showgrid": "false",
+        "showruler": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RA,DN,HM",
+        "maplist": "OSMG,OSMC,EsriC,EsriS,EsriT,EsriDG,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 1040,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "8f7b71290aa3f7a5",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "Format for Worldmap",
+        "func": "var lat = global.get(\"Latitude\");\nvar lon = global.get(\"Longitude\");\nvar name = global.get(\"Location\").toString();\n\nmsg.payload = {\n    name: name,\n    lat: lat,\n    lon: lon\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 380,
+        "wires": [
+            [
+                "d2f52436ce12e426",
+                "8768086e634672e9"
+            ]
+        ]
+    },
+    {
+        "id": "d2f52436ce12e426",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 20",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "f0e82cfca74db55b",
+        "type": "inject",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"Admin\":\"Adishree\",\"DeviceId\":\"D10900\",\"CustomerName\":\"Kasmiri sweets\",\"Location\":\"bbsr to puri\"}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 540,
+        "wires": [
+            [
+                "3681a593248365c7"
+            ]
+        ]
+    },
+    {
+        "id": "255c6898ba13b595",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "ea6554efdc7087dd",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Company ID:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 710,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "70baedc15dd09d59",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "ea6554efdc7087dd",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Company Name:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 730,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "34945e599dc70102",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "ea6554efdc7087dd",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Connected Devices:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "3681a593248365c7",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 30",
+        "func": "let input2 = msg.payload;\nlet CompanyID = input2[\"CompanyID\"];\nlet CompanyName = input2[\"CompanyName\"];\nlet ConnectedDevice = input2[\"ConnectedDevice \"];\n\n\nglobal.set(\"CompanyID \", CompanyID .toString());\nglobal.set(\"CompanyName \", CompanyName .toString());\nglobal.set(\"ConnectedDevice\", ConnectedDevice.toString());\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 540,
+        "wires": [
+            [
+                "53f9558baa1fad0f",
+                "e9039f5e4fb179ca",
+                "99b2331eb49578b7"
+            ]
+        ]
+    },
+    {
+        "id": "53f9558baa1fad0f",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 31",
+        "func": "msg.payload = global.get(\"CompanyID\").toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 500,
+        "wires": [
+            [
+                "255c6898ba13b595",
+                "773b68e0cfaba8f4"
+            ]
+        ]
+    },
+    {
+        "id": "e9039f5e4fb179ca",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 32",
+        "func": "msg.payload = global.get(\"CompanyName\").toString();\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 580,
+        "wires": [
+            [
+                "70baedc15dd09d59"
+            ]
+        ]
+    },
+    {
+        "id": "99b2331eb49578b7",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 33",
+        "func": "msg.payload = global.get(\"ConnectedDevice\").toString();\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 620,
+        "wires": [
+            [
+                "34945e599dc70102"
+            ]
+        ]
+    },
+    {
+        "id": "773b68e0cfaba8f4",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "0400551756fdcc9e",
+        "type": "ui_gauge",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "group": "24884380424908d3",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "Celsius",
+        "format": "{{value}}",
+        "min": "-40",
+        "max": "60",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "15",
+        "seg2": "30",
+        "diff": false,
+        "className": "",
+        "x": 1050,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a33879d387688f3b",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 35",
+        "func": "msg.payload = global.get(\"Temperature\");\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 280,
+        "wires": [
+            [
+                "0400551756fdcc9e",
+                "06e599aff09c820f",
+                "f31deb41b8475c5e"
+            ]
+        ]
+    },
+    {
+        "id": "06e599aff09c820f",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 25",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "afb958b8dab91734",
+        "type": "ui_gauge",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "group": "05f35a01ac80be62",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "Celsius",
+        "format": "{{value}}",
+        "min": "-40",
+        "max": "60",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "15",
+        "seg2": "30",
+        "diff": false,
+        "className": "",
+        "x": 1040,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "3888e90133bf90aa",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 26",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "f5341764404c16fe",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 36",
+        "func": "msg.payload = global.get(\"Humidity\");\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 340,
+        "wires": [
+            [
+                "afb958b8dab91734",
+                "3888e90133bf90aa",
+                "68bce54d9a87fb4b"
+            ]
+        ]
+    },
+    {
+        "id": "400a52dae3f465f9",
+        "type": "inject",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"Admin\":\"Adishree\",\"DeviceId\":\"D10900\",\"CustomerName\":\"Kasmiri sweets\",\"Location\":\"bbsr to puri\"}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 740,
+        "wires": [
+            [
+                "bc7bf28a65470e42"
+            ]
+        ]
+    },
+    {
+        "id": "063f6ccff1b69278",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "6a646d55f48e62df",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Device  Id:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 640,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "5111c8a084e20684",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "6a646d55f48e62df",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Location",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 640,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "4c39bfafd7a4eb23",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "6a646d55f48e62df",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Customer Name:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 670,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "bc7bf28a65470e42",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 37",
+        "func": "let input = msg.payload;\nlet Admin = input[\"Admin\"];\nlet DeviceId = input[\"DeviceId\"];\nlet CustomerName = input[\"CustomerName\"];\nlet Location = input[\"Location\"];\n\nglobal.set(\"Admin\", Admin.toString());\nglobal.set(\"DeviceId\", DeviceId.toString());\nglobal.set(\"CustomerName\", CustomerName.toString());\nglobal.set(\"Location\", Location.toString());\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 740,
+        "wires": [
+            [
+                "7de26264347952c3",
+                "3760957002648499",
+                "3afd1c1057c86e54",
+                "f8cdb2533e82f165"
+            ]
+        ]
+    },
+    {
+        "id": "7de26264347952c3",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 38",
+        "func": "msg.payload = global.get(\"Admin\").toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 700,
+        "wires": [
+            [
+                "ca3032f2de89d617"
+            ]
+        ]
+    },
+    {
+        "id": "3760957002648499",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 39",
+        "func": "msg.payload = global.get(\"DeviceId\").toString();\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 780,
+        "wires": [
+            [
+                "063f6ccff1b69278"
+            ]
+        ]
+    },
+    {
+        "id": "3afd1c1057c86e54",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 40",
+        "func": "msg.payload = global.get(\"CustomerName\").toString();\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 820,
+        "wires": [
+            [
+                "4c39bfafd7a4eb23"
+            ]
+        ]
+    },
+    {
+        "id": "f8cdb2533e82f165",
+        "type": "function",
+        "z": "a23054f590883c0b",
+        "name": "function 41",
+        "func": "\nmsg.payload = global.get(\"Location\").toString();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 860,
+        "wires": [
+            [
+                "5111c8a084e20684"
+            ]
+        ]
+    },
+    {
+        "id": "ca3032f2de89d617",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 27",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "f31deb41b8475c5e",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "6a646d55f48e62df",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Temprature : ",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1050,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "68bce54d9a87fb4b",
+        "type": "ui_text",
+        "z": "a23054f590883c0b",
+        "group": "6a646d55f48e62df",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Humidity",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1040,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8976c9f89da588ce",
+        "type": "ui_ui_control",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "events": "change",
+        "x": 800,
+        "y": 1020,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ab90b00217c1ace6",
+        "type": "ui_button",
+        "z": "a23054f590883c0b",
+        "name": "Admin",
+        "group": "6a646d55f48e62df",
+        "order": 6,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Details",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"tab\":\"Main Dashboard\"}",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "x": 610,
+        "y": 1020,
+        "wires": [
+            [
+                "8976c9f89da588ce"
+            ]
+        ]
+    },
+    {
+        "id": "2a8ecae676d7aea9",
+        "type": "ui_ui_control",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "events": "change",
+        "x": 680,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ef5239a3f2f78644",
+        "type": "ui_button",
+        "z": "a23054f590883c0b",
+        "name": "Admin",
+        "group": "b4b45b616c3383eb",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Back to Home",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "{\"tab\":\"Device page\"}",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "x": 490,
+        "y": 420,
+        "wires": [
+            [
+                "2a8ecae676d7aea9"
+            ]
+        ]
+    },
+    {
+        "id": "a76f8d87889e0d73",
+        "type": "mqtt in",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "topic": "temp/data",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8e5e18a9.aa097",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 100,
+        "y": 380,
+        "wires": [
+            [
+                "0d2f4b2b3472f352",
+                "3d550b5ee9e6b1b7"
+            ]
+        ]
+    },
+    {
+        "id": "3d550b5ee9e6b1b7",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 29",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "6817b6ce844b5819",
+        "type": "debug",
+        "z": "a23054f590883c0b",
+        "name": "debug 30",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "9b3eeaa4.53ac18",
+        "type": "ui_link",
+        "z": "a23054f590883c0b",
+        "name": "",
+        "link": "",
+        "icon": "",
+        "target": "iframe"
+    },
+    {
+        "id": "24f71dfc96a21ab3",
+        "type": "ui_spacer",
+        "z": "a23054f590883c0b",
+        "name": "spacer",
+        "group": "24884380424908d3",
+        "order": 1,
+        "width": 10,
+        "height": 1
+    },
+    {
+        "id": "6634c652cb06f7ad",
+        "type": "ui_spacer",
+        "z": "a23054f590883c0b",
+        "name": "spacer",
+        "group": "05f35a01ac80be62",
+        "order": 1,
+        "width": 10,
+        "height": 1
+    },
+    {
+        "id": "8e278e9e2ea9275e",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "3fd0e0037e3c8f7f",
+        "order": 1,
+        "disp": false,
+        "width": 30,
+        "collapse": false
+    },
+    {
+        "id": "b4b45b616c3383eb",
+        "type": "ui_group",
+        "name": "Location :",
+        "tab": "3fd0e0037e3c8f7f",
+        "order": 4,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ea6554efdc7087dd",
+        "type": "ui_group",
+        "name": "COMPANY DETAILS",
+        "tab": "ceaf06d6.9e7fd",
+        "order": 1,
+        "disp": true,
+        "width": "30",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "24884380424908d3",
+        "type": "ui_group",
+        "name": "Temprature",
+        "tab": "3fd0e0037e3c8f7f",
+        "order": 2,
+        "disp": false,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "05f35a01ac80be62",
+        "type": "ui_group",
+        "name": "Humidity",
+        "tab": "3fd0e0037e3c8f7f",
+        "order": 3,
+        "disp": false,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6a646d55f48e62df",
+        "type": "ui_group",
+        "name": "Shipment 1",
+        "tab": "ceaf06d6.9e7fd",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8e5e18a9.aa097",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.mqtt-dashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "3fd0e0037e3c8f7f",
+        "type": "ui_tab",
+        "name": "Main Dashboard",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "ceaf06d6.9e7fd",
+        "type": "ui_tab",
+        "name": "Device page",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
