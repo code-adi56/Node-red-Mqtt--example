@@ -1,0 +1,981 @@
+[
+    {
+        "id": "d9578a9443730ab8",
+        "type": "tab",
+        "label": "Soil testing ",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e14387b12e8c8168",
+        "type": "mqtt in",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "topic": "sense/soil",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "2c7d041410152ef6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 420,
+        "wires": [
+            [
+                "adfffac06f788014",
+                "6dd9c0aac3435f64"
+            ]
+        ]
+    },
+    {
+        "id": "adfffac06f788014",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "function 15",
+        "func": "const inputPayload = msg.payload;\n\n// Extract the \"soil\" value from the JSON object\nconst Soilvalue = inputPayload[\"Moisture\"];\nconst SoilpH = inputPayload[\"pHValue\"];\nconst SoilNitrogen = inputPayload[\"Soil-Nitro\"];\nconst SoilPhosphorous = inputPayload[\"Soil-Phosphorous\"];\nconst SoilPotassium = inputPayload[\"Soil-Potassium\"]\n// Create a new object with the extracted values\nmsg.payload = {\n    pH: parseFloat(SoilpH),\n    moisture: parseFloat(Soilvalue),\n    // N: parseFloat(SoilNitrogen),\n    // P: parseFloat(SoilPhosphorous),\n    // K: parseFloat(SoilPotassium)\n};\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 420,
+        "wires": [
+            [
+                "5796d0bb9dd2cb65",
+                "5c9383f0ed6aa2a9",
+                "90688564fc6810d5",
+                "dcdec0e7cada0bd1"
+            ]
+        ]
+    },
+    {
+        "id": "bb226950fe73aa65",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "Ph comparison",
+        "func": "var pH= msg.payload;\n\nif (pH >= 6.5 && pH <= 7.5) {\n    msg.payload = \"Soil is having optimum pH range for optimum plant growth\"\n\n}\nelse if (pH<= 6.5 && pH >= 5.5) {\n    msg.payload = \"slightly acidic\"\n}\nelse if (pH < 5.5 &&pH >= 5.0) {\n    msg.payload = \"Moderately acidic\"\n}\nelse if (pH < 5.0 && pH >= 4.5) {\n    msg.payload = \"Strongly acidic\"\n}\nelse if (pH < 4.5) {\n    msg.payload = \"Extremely acidic\"\n}\nelse if (pH> 7.5 && pH <= 8.0) {\n    msg.payload = \"Slightly alkanine\"\n}\nelse if (pH > 8.0 && pH <= 8.5) {\n    msg.payload = \"Medium alkanine\"\n}\nelse {\n    msg.payload = \"Strongly alkaline\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 500,
+        "wires": [
+            [
+                "064a2b321b71a30d",
+                "a9c4b0fbe3a58870"
+            ]
+        ]
+    },
+    {
+        "id": "064a2b321b71a30d",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "pH comparison",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a9c4b0fbe3a58870",
+        "type": "ui_text",
+        "z": "d9578a9443730ab8",
+        "group": "2188121a7232a500",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "pH:-",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 950,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "5796d0bb9dd2cb65",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "Ph value",
+        "func": "\nmsg.payload=msg.payload.pH;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 260,
+        "wires": [
+            [
+                "2566a733accd0d9d",
+                "bb226950fe73aa65",
+                "2cd761ebb52b66e8"
+            ]
+        ]
+    },
+    {
+        "id": "2566a733accd0d9d",
+        "type": "ui_gauge",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "group": "2188121a7232a500",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Ph reading",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "14",
+        "colors": [
+            "#e65a41",
+            "#02ca7d",
+            "#2ca9c9"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 770,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "6141e621b4470f51",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "Moisture comparison",
+        "func": "var moisture= msg.payload;\n\nif (moisture >= 45 && moisture <= 80) {\n    msg.payload = \"No irrigation is required\"\n}\nelse if (moisture >= 20 && moisture < 45) {\n    msg.payload = \" Irrigation is required\"\n}\nelse if (moisture < 20) {\n    msg.payload = \" Dangerously low moisture\"\n}\nelse {\n    msg.payload = \"Highly irrigated plants can get destroyed\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 600,
+        "wires": [
+            [
+                "9b92e61e6661fa31",
+                "b232e5192f214c8b"
+            ]
+        ]
+    },
+    {
+        "id": "9b92e61e6661fa31",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "Moisture comparison",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "b232e5192f214c8b",
+        "type": "ui_text",
+        "z": "d9578a9443730ab8",
+        "group": "0a531ba98c0c117a",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Moisture:-",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 960,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "5c9383f0ed6aa2a9",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "Moisture value",
+        "func": "msg.payload=msg.payload.moisture;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 500,
+        "wires": [
+            [
+                "e5c3a8d16dba6bae",
+                "6141e621b4470f51"
+            ]
+        ]
+    },
+    {
+        "id": "e5c3a8d16dba6bae",
+        "type": "ui_gauge",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "group": "0a531ba98c0c117a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Moisture",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 680,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "a5df6e9f085b2410",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "function 16",
+        "func": "const Soil = msg.payload;\n\n// Set the data in the global context\nglobal.set('SoilType', Soil);\n\n// Continue the flow\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 780,
+        "wires": [
+            [
+                "a84cb25678aa4367"
+            ]
+        ]
+    },
+    {
+        "id": "c13a15d1f03fa888",
+        "type": "ui_dropdown",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "label": "Crop Type",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "ee6d670f8a2cf5e6",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Barley",
+                "value": "Barley",
+                "type": "str"
+            },
+            {
+                "label": "Cotton",
+                "value": "Cotton",
+                "type": "str"
+            },
+            {
+                "label": "Ground Nut",
+                "value": "Ground Nut",
+                "type": "str"
+            },
+            {
+                "label": "Maize",
+                "value": "Maize",
+                "type": "str"
+            },
+            {
+                "label": "Millets",
+                "value": "Millets",
+                "type": "str"
+            },
+            {
+                "label": "Oil  seeds",
+                "value": "Oil  seeds",
+                "type": "str"
+            },
+            {
+                "label": "Rice",
+                "value": "Rice",
+                "type": "str"
+            },
+            {
+                "label": "Pulses",
+                "value": "Pulses",
+                "type": "str"
+            },
+            {
+                "label": "Sugarcane",
+                "value": "Sugarcane",
+                "type": "str"
+            },
+            {
+                "label": "Tobacco",
+                "value": "obacco",
+                "type": "str"
+            },
+            {
+                "label": "Wheat",
+                "value": "Wheat",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 90,
+        "y": 720,
+        "wires": [
+            [
+                "9778ef098cb7b38e"
+            ]
+        ]
+    },
+    {
+        "id": "9778ef098cb7b38e",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "function 17",
+        "func": "// Assuming msg.payload contains the data you want to transfer\nconst Crop= msg.payload;\n\n// Set the data in the global context\nglobal.set('CropType', Crop);\n\n// Continue the flow\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 720,
+        "wires": [
+            [
+                "a84cb25678aa4367"
+            ]
+        ]
+    },
+    {
+        "id": "7270adc27319cb0c",
+        "type": "ui_dropdown",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "label": "Soil Type",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "ee6d670f8a2cf5e6",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Black",
+                "value": "Black",
+                "type": "str"
+            },
+            {
+                "label": "Clayey",
+                "value": "Clayey",
+                "type": "str"
+            },
+            {
+                "label": "Loamy",
+                "value": "Loamy",
+                "type": "str"
+            },
+            {
+                "label": "Red",
+                "value": "Red",
+                "type": "str"
+            },
+            {
+                "label": "Sandy",
+                "value": "Sandy",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 100,
+        "y": 780,
+        "wires": [
+            [
+                "a5df6e9f085b2410"
+            ]
+        ]
+    },
+    {
+        "id": "b7c1e1f9ee685337",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "json input for fertilizer recommendation",
+        "func": "const pHvalue = global.get('pH') ;\nconst moisvalue= global.get('mois');\nconst selectedCrop = global.get('CropType'); // Assuming the crop type is stored in a property called 'crop' in the message\nconst selectedSoil = global.get('SoilType'); // Assuming the soil type is stored in a property called 'soil' in the message\nconst Nitro = 92;\nconst Phos = 42;\nconst Pota = 41;\nmsg.payload = {\n    \"N\": Nitro,\n    \"P\":Phos,\n    \"K\":Pota,\n    \"pH\": pHvalue,\n    \"Moisture\": moisvalue,\n    \"Crop Type\": selectedCrop,\n    \"Soil Type\": selectedSoil\n};\n\nreturn msg;\n         43  ",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 700,
+        "wires": [
+            [
+                "7658d8c896cfbecb"
+            ]
+        ]
+    },
+    {
+        "id": "a84cb25678aa4367",
+        "type": "ui_button",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "group": "ee6d670f8a2cf5e6",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Submit",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 680,
+        "y": 740,
+        "wires": [
+            [
+                "b7c1e1f9ee685337"
+            ]
+        ]
+    },
+    {
+        "id": "90688564fc6810d5",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "function 20",
+        "func": "// Assuming msg.payload contains the data you want to transfer\nconst mois = msg.payload.moisture;\n\n// Set the data in the global context\nglobal.set('mois', mois);\n\n// Continue the flow\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 800,
+        "wires": [
+            [
+                "a84cb25678aa4367"
+            ]
+        ]
+    },
+    {
+        "id": "db28bb7f77096c8b",
+        "type": "ui_button",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "group": "c6f8b5f953521d63",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Check ",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 510,
+        "y": 880,
+        "wires": [
+            [
+                "1d0bf21b93dd29ba"
+            ]
+        ]
+    },
+    {
+        "id": "1d0bf21b93dd29ba",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "json input for crop recommendation",
+        "func": "const pHvalue = global.get('pH') ;\nconst moisvalue= global.get('mois');\n// Assuming the soil type is stored in a property called 'soil' in the message\nconst N = 40;\nconst P = 2;\nconst K = 93;\nconst rainfall = 197;\nconst temprature = 27;\nmsg.payload = {\n   \n  K:K,\n N: N,\n    P: P,\n    humidity: moisvalue,\n    ph: pHvalue,\n    rainfall:rainfall,\n    temperature:temprature\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 860,
+        "wires": [
+            [
+                "3797dfc8eb681b92",
+                "840587e17bc0ac17"
+            ]
+        ]
+    },
+    {
+        "id": "7658d8c896cfbecb",
+        "type": "http request",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://127.0.0.1:8001/crop_predict",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1090,
+        "y": 760,
+        "wires": [
+            [
+                "3aa4c90249feab59",
+                "60df787a5e25bb43"
+            ]
+        ]
+    },
+    {
+        "id": "3797dfc8eb681b92",
+        "type": "http request",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://127.0.0.1:8001/crop_predict",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1070,
+        "y": 800,
+        "wires": [
+            [
+                "1dd721b3bb4806a8"
+            ]
+        ]
+    },
+    {
+        "id": "840587e17bc0ac17",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "3aa4c90249feab59",
+        "type": "ui_text",
+        "z": "d9578a9443730ab8",
+        "group": "ee6d670f8a2cf5e6",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Fertilizer",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1300,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6dd9c0aac3435f64",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "b13617a881923985",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "function 21",
+        "func": "const inputPayload = msg.payload;\nconst fert = inputPayload[\"Fertilizer Name\"];\nmsg.payload = {\n    Fert:fert,\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1270,
+        "y": 720,
+        "wires": [
+            [
+                "5ceab5852026ce1c",
+                "41fd65d2cee411bd"
+            ]
+        ]
+    },
+    {
+        "id": "5ceab5852026ce1c",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1500,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "30d10cb8816c39fb",
+        "type": "inject",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"pHValue\":6.7926,\"Moisture\":78}",
+        "payloadType": "json",
+        "x": 150,
+        "y": 600,
+        "wires": [
+            [
+                "adfffac06f788014"
+            ]
+        ]
+    },
+    {
+        "id": "1dd721b3bb4806a8",
+        "type": "ui_text",
+        "z": "d9578a9443730ab8",
+        "group": "c6f8b5f953521d63",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "crop:-",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1290,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "2cd761ebb52b66e8",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "41fd65d2cee411bd",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "fertilizer",
+        "func": "\nmsg.payload=msg.payload.Fert;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 640,
+        "wires": [
+            [
+                "3aa4c90249feab59",
+                "bc16753532c0c031"
+            ]
+        ]
+    },
+    {
+        "id": "bc16753532c0c031",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1440,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "5e0d33e77b35c825",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "d": true,
+        "name": "Nitrogen comparison",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1360,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ca7f55d40468b907",
+        "type": "ui_text",
+        "z": "d9578a9443730ab8",
+        "d": true,
+        "group": "790389b2ddde8282",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "N:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1150,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "dcdec0e7cada0bd1",
+        "type": "function",
+        "z": "d9578a9443730ab8",
+        "name": "function 24",
+        "func": "// Assuming msg.payload contains the data you want to transfer\nconst pH = msg.payload.pH;\n\n// Set the data in the global context\nglobal.set('pH', pH);\n\n// Continue the flow\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 660,
+        "wires": [
+            [
+                "a84cb25678aa4367"
+            ]
+        ]
+    },
+    {
+        "id": "a868f68fb253f9d1",
+        "type": "inject",
+        "z": "d9578a9443730ab8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"Nitrogen\":50,\"Phosphorous\":30,\"Potassium\":40,\"Temperature\":25.5,\"Humidity\":60,\"pH\":6.8,\"Moisture\":22,\"SoilType\":\"loamy\"}",
+        "payloadType": "json",
+        "x": 850,
+        "y": 780,
+        "wires": [
+            [
+                "7658d8c896cfbecb"
+            ]
+        ]
+    },
+    {
+        "id": "60df787a5e25bb43",
+        "type": "debug",
+        "z": "d9578a9443730ab8",
+        "name": "debug 66",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1240,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "2c7d041410152ef6",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.mqttdashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "2188121a7232a500",
+        "type": "ui_group",
+        "name": "pH reading",
+        "tab": "5dc453a05d2eb86f",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0a531ba98c0c117a",
+        "type": "ui_group",
+        "name": "Moisture value",
+        "tab": "5dc453a05d2eb86f",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ee6d670f8a2cf5e6",
+        "type": "ui_group",
+        "name": "Fertilizer recommendation",
+        "tab": "5dc453a05d2eb86f",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c6f8b5f953521d63",
+        "type": "ui_group",
+        "name": "Crop prediction",
+        "tab": "5dc453a05d2eb86f",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "790389b2ddde8282",
+        "type": "ui_group",
+        "name": "Nitrogen",
+        "tab": "536a8db54a7d7f5d",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5dc453a05d2eb86f",
+        "type": "ui_tab",
+        "name": "Soil Health Monitoring System",
+        "icon": "dashboard",
+        "order": 7,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "536a8db54a7d7f5d",
+        "type": "ui_tab",
+        "name": "Soil Parameters",
+        "icon": "dashboard",
+        "order": 6,
+        "disabled": false,
+        "hidden": false
+    }
+]

@@ -1,0 +1,1959 @@
+[
+    {
+        "id": "b96138cdeecf7465",
+        "type": "tab",
+        "label": "Soil testing with firebase",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "61bb85bfb0311122",
+        "type": "group",
+        "z": "b96138cdeecf7465",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "8dd4eaac0ab9b310",
+            "cef4ca17740f5382",
+            "0d8d55df1e804b5f",
+            "b5cc446655e2a73a",
+            "12c7c42529507993",
+            "8c112c985da2b28c",
+            "b50a74b47355d4fa",
+            "a9175201117a4b79",
+            "5ce01d4f19904ab7",
+            "8b928016163b6185",
+            "d04391afc51f6fe3",
+            "3d4a2c409fb0a373",
+            "b553c8dcffc405a1",
+            "e96de78d2042f475"
+        ],
+        "x": 34,
+        "y": 39,
+        "w": 1132,
+        "h": 322
+    },
+    {
+        "id": "0cfb7877eed3fbab",
+        "type": "group",
+        "z": "b96138cdeecf7465",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "56675266e44eb6ed",
+            "8e2d62332d20f92a",
+            "2f36a05cc18b643e",
+            "d1b1a8e2a080b060",
+            "b5271fc231207d54",
+            "03d62b31f2fec64c",
+            "932d40248fc8d32e",
+            "0ab0f58cf23dfbc6",
+            "4d5456f972cd8558",
+            "1acd62a30bbc3fc5",
+            "e96deea96c52e360",
+            "737bf00051cc4f3a",
+            "70a9f748ab45537a",
+            "3c5057bc4d52b1ad",
+            "0e26e40031b7e02b",
+            "0d9895cd01482ab1",
+            "cd559e3c39cb4bf4",
+            "eaab547787905068",
+            "9df446c8b08333eb",
+            "59279e38e985a463",
+            "46371274120d67f5",
+            "df7c41397a3f86ce"
+        ],
+        "x": 34,
+        "y": 399,
+        "w": 1412,
+        "h": 542
+    },
+    {
+        "id": "f82f193989808c07",
+        "type": "mqtt in",
+        "z": "b96138cdeecf7465",
+        "d": true,
+        "name": "",
+        "topic": "soil/data",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8e5e18a9.aa097",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 1140,
+        "wires": [
+            [
+                "48d4c7ba799fb5ad"
+            ]
+        ]
+    },
+    {
+        "id": "48d4c7ba799fb5ad",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Data Input",
+        "func": "\nconst inputPayload = msg.payload;\nconst SoilMois = inputPayload[\"Moisture\"];\nconst SoilpH = inputPayload[\"pHValue\"];\nconst SoilNitrogen = inputPayload[\"Soil-Nitro\"];\nconst SoilPhosphorous = inputPayload[\"Soil-Phosphorous\"];\nconst SoilPotassium = inputPayload[\"Soil-Potassium\"];\n\n\nglobal.set(\"pH\", parseFloat(SoilpH));\nglobal.set(\"moisture\", parseFloat(SoilMois));\nglobal.set(\"N\", parseFloat(SoilNitrogen));\nglobal.set(\"P\", parseFloat(SoilPhosphorous));\nglobal.set(\"K\", parseFloat(SoilPotassium));\n\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 1100,
+        "wires": [
+            [
+                "a50a5c66686543bc",
+                "b2910e56c47b30f0",
+                "0ef90abd7f98789f",
+                "9ad513ebfefba266",
+                "40ee34eaefaeb3e0"
+            ]
+        ]
+    },
+    {
+        "id": "656d8d2bd3b32cf2",
+        "type": "ui_gauge",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "group": "42a4c2f7b5412d81",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "pH Value",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 860,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "a50a5c66686543bc",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "pH node",
+        "func": "\nconst pHValue = global.get(\"pH\");\n\n// Assign the pH value to msg.payload\nmsg.payload = pHValue;\n\n// Return the modified message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 1100,
+        "wires": [
+            [
+                "656d8d2bd3b32cf2"
+            ]
+        ]
+    },
+    {
+        "id": "b2910e56c47b30f0",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Moisture value",
+        "func": "\nconst Moisture = global.get(\"moisture\");\n\n// Assign the pH value to msg.payload\nmsg.payload = Moisture;\n\n// Return the modified message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 1140,
+        "wires": [
+            [
+                "80dedf4365fdd0a7"
+            ]
+        ]
+    },
+    {
+        "id": "80dedf4365fdd0a7",
+        "type": "ui_gauge",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "group": "ec7237d744241126",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Moisture",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 880,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "0ef90abd7f98789f",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Nitrogen value",
+        "func": "const Nitro = global.get(\"N\");\n\n// Assign the pH value to msg.payload\nmsg.payload = Nitro;\n\n// Return the modified message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 1200,
+        "wires": [
+            [
+                "a108fd071dc43a0c"
+            ]
+        ]
+    },
+    {
+        "id": "9ad513ebfefba266",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Phosphorous value",
+        "func": "const Phos = global.get(\"P\");\n\n// Assign the pH value to msg.payload\nmsg.payload = Phos;\n\n// Return the modified message\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 1240,
+        "wires": [
+            [
+                "fab7a7740b48a480"
+            ]
+        ]
+    },
+    {
+        "id": "fab7a7740b48a480",
+        "type": "ui_gauge",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "group": "bd00c3973736735b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Phosphorous",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 890,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "a108fd071dc43a0c",
+        "type": "ui_gauge",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "group": "75b63678b3b7b670",
+        "order": 1,
+        "width": 11,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Nitrogen",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 880,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "40ee34eaefaeb3e0",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Potassium value",
+        "func": "const Pota = global.get(\"K\");\n\n// Assign the pH value to msg.payload\nmsg.payload = Pota;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 1280,
+        "wires": [
+            [
+                "c6f1a579838396a1"
+            ]
+        ]
+    },
+    {
+        "id": "c6f1a579838396a1",
+        "type": "ui_gauge",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "group": "4eed4b7b5e897782",
+        "order": 1,
+        "width": 11,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Potassium",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 890,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "0f0efcbde356d84d",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Ph comparison",
+        "func": "let pH = global.get(\"pH\");\n\nif (pH >= 6.5 && pH <= 7.5) {\n    msg.payload = \"Soil is having optimum pH range for optimum plant growth\"\n\n}\nelse if (pH<= 6.5 && pH >= 5.5) {\n    msg.payload = \"slightly acidic\"\n}\nelse if (pH < 5.5 &&pH >= 5.0) {\n    msg.payload = \"Moderately acidic\"\n}\nelse if (pH < 5.0 && pH >= 4.5) {\n    msg.payload = \"Strongly acidic\"\n}\nelse if (pH < 4.5) {\n    msg.payload = \"Extremely acidic\"\n}\nelse if (pH> 7.5 && pH <= 8.0) {\n    msg.payload = \"Slightly alkanine\"\n}\nelse if (pH > 8.0 && pH <= 8.5) {\n    msg.payload = \"Medium alkanine\"\n}\nelse {\n    msg.payload = \"Strongly alkaline\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 1340,
+        "wires": [
+            [
+                "5e61ab5f0d5bdcf7"
+            ]
+        ]
+    },
+    {
+        "id": "5e61ab5f0d5bdcf7",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "group": "8141ef4936691b56",
+        "order": 3,
+        "width": 24,
+        "height": 1,
+        "name": "",
+        "label": "pH:-",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 830,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "1fe9cc91d91098f8",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Moisture comparison",
+        "func": "let moisture = global.get(\"moisture\");\n\nif (moisture >= 80 && moisture <= 100) {\n    msg.payload = \"No irrigation is required\"\n}\nelse if (moisture >= 60 && moisture < 80) {\n    msg.payload = \" Irrigation is required\"\n}\nelse if (moisture < 60) {\n    msg.payload = \" Dangerously low moisture\"\n}\nelse {\n    msg.payload = \"Highly irrigated plants can get destroyed\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 1380,
+        "wires": [
+            [
+                "de454f6eb71ad44d"
+            ]
+        ]
+    },
+    {
+        "id": "de454f6eb71ad44d",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "group": "8141ef4936691b56",
+        "order": 4,
+        "width": 24,
+        "height": 1,
+        "name": "",
+        "label": "Moisture:-",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 840,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "d13dc5c348b7dffb",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Nitrogen comparison",
+        "func": "let N = global.get(\"N\");\nif(N>=25 && N<=50)\n{\n    msg.payload=\"Nitrogen is optimum in the soil\";\n}\nelse if(N<25)\n{\n    msg.payload=\"Nitrogen is defecient\";\n}\nelse \n{\n    msg.payload=\"Nitrogen is excessive in the soil\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 1440,
+        "wires": [
+            [
+                "ce940a06f3899378"
+            ]
+        ]
+    },
+    {
+        "id": "ce940a06f3899378",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "group": "8141ef4936691b56",
+        "order": 5,
+        "width": 24,
+        "height": 1,
+        "name": "",
+        "label": "N:",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 830,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "0a71efb2ece3b7cb",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Phosphorous comparison",
+        "func": "let P = global.get(\"P\");\nif(P>=50 && P<=70)\n{\n    msg.payload=\"Phosphorous is optimum in soil no fertillizer is required\";\n}\nelse if(P<50)\n{\n    msg.payload =\"Phosphorous is low and fertillizer can be applied\";\n}\nelse {\n    msg.payload=\"Excessive Phosphorous reduces plant's ability to take up nutrient\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 1480,
+        "wires": [
+            [
+                "788c8d310a7053b7"
+            ]
+        ]
+    },
+    {
+        "id": "788c8d310a7053b7",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "group": "8141ef4936691b56",
+        "order": 6,
+        "width": 24,
+        "height": 1,
+        "name": "",
+        "label": "P:",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 850,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "43fe828fdc83e7c6",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Potassium comparison",
+        "func": "let K = global.get(\"K\");\nif(K>=50 && K<=70)\n{\n    msg.payload=\"Potassium is optimum in the soil\";\n}\nelse if(K<50)\n{\n    msg.payload=\"Potassium is lower in soil , soil requires application of fertillizer\";\n\n}\nelse {\n    msg.payload=\"Potassium is having excessive potasium\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 1520,
+        "wires": [
+            [
+                "c14cbe68f8ca9928"
+            ]
+        ]
+    },
+    {
+        "id": "c14cbe68f8ca9928",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "group": "8141ef4936691b56",
+        "order": 7,
+        "width": 24,
+        "height": 1,
+        "name": "",
+        "label": "K:",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 850,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "7c9a30cd5982771c",
+        "type": "inject",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"pHValue\":6.7926,\"Moisture\":78,\"Soil-Nitro\":12.5,\"Soil-Phosphorous\":18.7,\"Soil-Potassium\":25.3}",
+        "payloadType": "json",
+        "x": 190,
+        "y": 1100,
+        "wires": [
+            [
+                "48d4c7ba799fb5ad"
+            ]
+        ]
+    },
+    {
+        "id": "34c4269999bf0d25",
+        "type": "ui_dropdown",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "label": "Crop Type",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "8141ef4936691b56",
+        "order": 1,
+        "width": 24,
+        "height": 1,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Barley",
+                "value": "Barley",
+                "type": "str"
+            },
+            {
+                "label": "Cotton",
+                "value": "Cotton",
+                "type": "str"
+            },
+            {
+                "label": "Ground Nut",
+                "value": "Ground Nut",
+                "type": "str"
+            },
+            {
+                "label": "Maize",
+                "value": "Maize",
+                "type": "str"
+            },
+            {
+                "label": "Millets",
+                "value": "Millets",
+                "type": "str"
+            },
+            {
+                "label": "Oil  seeds",
+                "value": "Oil  seeds",
+                "type": "str"
+            },
+            {
+                "label": "Rice",
+                "value": "Rice",
+                "type": "str"
+            },
+            {
+                "label": "Pulses",
+                "value": "Pulses",
+                "type": "str"
+            },
+            {
+                "label": "Sugarcane",
+                "value": "Sugarcane",
+                "type": "str"
+            },
+            {
+                "label": "Tobacco",
+                "value": "Tobacco",
+                "type": "str"
+            },
+            {
+                "label": "Wheat",
+                "value": "Wheat",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 250,
+        "y": 1600,
+        "wires": [
+            [
+                "6588239fe6a8b2a7"
+            ]
+        ]
+    },
+    {
+        "id": "6588239fe6a8b2a7",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Crop type ",
+        "func": "\nconst Crop= msg.payload;\n\n\nglobal.set('CropType', Crop);\n\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 1600,
+        "wires": [
+            [
+                "949090e1bb3a6619"
+            ]
+        ]
+    },
+    {
+        "id": "858c0280d1d557a8",
+        "type": "ui_dropdown",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "label": "Soil Type",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "8141ef4936691b56",
+        "order": 2,
+        "width": 24,
+        "height": 1,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Black",
+                "value": "Black",
+                "type": "str"
+            },
+            {
+                "label": "Clayey",
+                "value": "Clayey",
+                "type": "str"
+            },
+            {
+                "label": "Loamy",
+                "value": "Loamy",
+                "type": "str"
+            },
+            {
+                "label": "Red",
+                "value": "Red",
+                "type": "str"
+            },
+            {
+                "label": "Sandy",
+                "value": "Sandy",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 240,
+        "y": 1680,
+        "wires": [
+            [
+                "a146f8cb9e98531d"
+            ]
+        ]
+    },
+    {
+        "id": "a146f8cb9e98531d",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "Soil type",
+        "func": "const Soil = msg.payload;\n\n// Set the data in the global context\nglobal.set('SoilType', Soil);\n\n// Continue the flow\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 412.1111145019531,
+        "y": 1681,
+        "wires": [
+            [
+                "949090e1bb3a6619"
+            ]
+        ]
+    },
+    {
+        "id": "949090e1bb3a6619",
+        "type": "ui_button",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "group": "8141ef4936691b56",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "button",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "set",
+        "payloadType": "global",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 610,
+        "y": 1620,
+        "wires": [
+            [
+                "251eaa4e171fcb2a"
+            ]
+        ]
+    },
+    {
+        "id": "251eaa4e171fcb2a",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "name": "function 25",
+        "func": "\nlet crop = global.get(\"CropType\");\nlet soil = global.get(\"SoilType\");\n\nif( crop == \"Barley\" && soil == \"Loamy\")\n{\n    msg.payload = 1;\n}\nelse if (crop == \"Cotton\" && soil == \"Loamy\") {\n    msg.payload = 2;\n}\n\nelse if(crop == \"\")\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 1620,
+        "wires": [
+            [
+                "3a42240f8b4c577d"
+            ]
+        ]
+    },
+    {
+        "id": "3a42240f8b4c577d",
+        "type": "switch",
+        "z": "b96138cdeecf7465",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 930,
+        "y": 1620,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8dd4eaac0ab9b310",
+        "type": "comment",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Sign up ",
+        "info": "",
+        "x": 130,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "cef4ca17740f5382",
+        "type": "ui_text_input",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Name",
+        "label": "Company Name",
+        "tooltip": "",
+        "group": "deea738e15430b6e",
+        "order": 2,
+        "width": "5",
+        "height": 1,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "name",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "8c112c985da2b28c"
+            ]
+        ]
+    },
+    {
+        "id": "0d8d55df1e804b5f",
+        "type": "ui_text_input",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "UserId",
+        "label": "UserId",
+        "tooltip": "",
+        "group": "deea738e15430b6e",
+        "order": 5,
+        "width": "6",
+        "height": 1,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "username",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 110,
+        "y": 220,
+        "wires": [
+            [
+                "b50a74b47355d4fa"
+            ]
+        ]
+    },
+    {
+        "id": "b5cc446655e2a73a",
+        "type": "ui_text_input",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Email",
+        "label": "Email",
+        "tooltip": "",
+        "group": "deea738e15430b6e",
+        "order": 8,
+        "width": "6",
+        "height": 1,
+        "passthru": true,
+        "mode": "email",
+        "delay": 300,
+        "topic": "email",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "a9175201117a4b79"
+            ]
+        ]
+    },
+    {
+        "id": "12c7c42529507993",
+        "type": "ui_button",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "SignUp",
+        "group": "deea738e15430b6e",
+        "order": 15,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "SignUp ",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "blue",
+        "className": "",
+        "icon": "",
+        "payload": "{\"tab\": \"Login_Soil\"}",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "x": 520,
+        "y": 220,
+        "wires": [
+            [
+                "d04391afc51f6fe3",
+                "b553c8dcffc405a1"
+            ]
+        ]
+    },
+    {
+        "id": "8c112c985da2b28c",
+        "type": "change",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Store Name",
+        "rules": [
+            {
+                "t": "set",
+                "p": "name",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 270,
+        "y": 180,
+        "wires": [
+            [
+                "12c7c42529507993"
+            ]
+        ]
+    },
+    {
+        "id": "b50a74b47355d4fa",
+        "type": "change",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Store Username",
+        "rules": [
+            {
+                "t": "set",
+                "p": "userId",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 220,
+        "wires": [
+            [
+                "12c7c42529507993"
+            ]
+        ]
+    },
+    {
+        "id": "a9175201117a4b79",
+        "type": "change",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Store Email",
+        "rules": [
+            {
+                "t": "set",
+                "p": "email",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 290,
+        "y": 260,
+        "wires": [
+            [
+                "12c7c42529507993"
+            ]
+        ]
+    },
+    {
+        "id": "5ce01d4f19904ab7",
+        "type": "ui_text_input",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Password",
+        "label": "Password",
+        "tooltip": "",
+        "group": "deea738e15430b6e",
+        "order": 11,
+        "width": "6",
+        "height": 1,
+        "passthru": true,
+        "mode": "password",
+        "delay": 300,
+        "topic": "passkey",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "8b928016163b6185"
+            ]
+        ]
+    },
+    {
+        "id": "8b928016163b6185",
+        "type": "change",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Store Passkey",
+        "rules": [
+            {
+                "t": "set",
+                "p": "passkey",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 300,
+        "wires": [
+            [
+                "12c7c42529507993"
+            ]
+        ]
+    },
+    {
+        "id": "d04391afc51f6fe3",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Process Input",
+        "func": "let name = flow.get('name');\nlet userId = flow.get('userId');\nlet email = flow.get('email');\nlet password = flow.get('passkey');\n\nmsg.payload = {\n    name: name,\n    userId: userId,\n    email: email,\n    pass :password\n \n};\n\n// Store the generated userId in flow context for later use\nmsg.topic = \"Username/\"+userId\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 220,
+        "wires": [
+            [
+                "3d4a2c409fb0a373"
+            ]
+        ]
+    },
+    {
+        "id": "3d4a2c409fb0a373",
+        "type": "firebase-out",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "Firebase Store",
+        "database": "da48af0e9ac609b0",
+        "path": "topic",
+        "pathType": "msg",
+        "priority": 1,
+        "queryType": "push",
+        "x": 1060,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "b553c8dcffc405a1",
+        "type": "ui_ui_control",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "",
+        "events": "all",
+        "x": 660,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e96de78d2042f475",
+        "type": "link out",
+        "z": "b96138cdeecf7465",
+        "g": "61bb85bfb0311122",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "d5aa7b3373f38f7e",
+            "59279e38e985a463"
+        ],
+        "x": 1115,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "56675266e44eb6ed",
+        "type": "comment",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "Login",
+        "info": "",
+        "x": 130,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "8e2d62332d20f92a",
+        "type": "ui_text_input",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "Username",
+        "label": "Username",
+        "tooltip": "",
+        "group": "49e795f06702a500",
+        "order": 5,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "mode": "text",
+        "delay": "300",
+        "topic": "username",
+        "sendOnBlur": true,
+        "className": "Username",
+        "topicType": "str",
+        "x": 130,
+        "y": 480,
+        "wires": [
+            [
+                "d1b1a8e2a080b060"
+            ]
+        ]
+    },
+    {
+        "id": "2f36a05cc18b643e",
+        "type": "ui_text_input",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "Password",
+        "label": "Password",
+        "tooltip": "",
+        "group": "49e795f06702a500",
+        "order": 8,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "mode": "password",
+        "delay": 300,
+        "topic": "passkey",
+        "sendOnBlur": true,
+        "className": "Password",
+        "topicType": "str",
+        "x": 120,
+        "y": 520,
+        "wires": [
+            [
+                "b5271fc231207d54"
+            ]
+        ]
+    },
+    {
+        "id": "d1b1a8e2a080b060",
+        "type": "change",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "Store Username",
+        "rules": [
+            {
+                "t": "set",
+                "p": "userId",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 480,
+        "wires": [
+            [
+                "932d40248fc8d32e"
+            ]
+        ]
+    },
+    {
+        "id": "b5271fc231207d54",
+        "type": "change",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "Store Passkey",
+        "rules": [
+            {
+                "t": "set",
+                "p": "passkey",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 520,
+        "wires": [
+            [
+                "932d40248fc8d32e"
+            ]
+        ]
+    },
+    {
+        "id": "03d62b31f2fec64c",
+        "type": "firebase-get",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "",
+        "constraint": {},
+        "database": "2eb2f5abb58f0254",
+        "outputType": "auto",
+        "passThrough": true,
+        "path": "topic",
+        "pathType": "msg",
+        "useConstraint": false,
+        "x": 850,
+        "y": 500,
+        "wires": [
+            [
+                "9df446c8b08333eb"
+            ]
+        ]
+    },
+    {
+        "id": "932d40248fc8d32e",
+        "type": "ui_button",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "login",
+        "group": "deea738e15430b6e",
+        "order": 12,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Login",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "Login",
+        "icon": "",
+        "payload": "{}",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "x": 510,
+        "y": 500,
+        "wires": [
+            [
+                "0ab0f58cf23dfbc6"
+            ]
+        ]
+    },
+    {
+        "id": "0ab0f58cf23dfbc6",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "Process Input",
+        "func": "\nlet userId = flow.get('userId');\nlet password = flow.get('passkey');\nglobal.set('companyId', userId);\n//let userId = Math.random().toString(36).substr(2, 9);\nmsg.payload = {\n  \n    userId: userId,\n    passkey:password\n  \n};\n\n// Store the generated userId in flow context for later use\nmsg.topic = \"Username/\"+userId + \"/\"\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 500,
+        "wires": [
+            [
+                "03d62b31f2fec64c"
+            ]
+        ]
+    },
+    {
+        "id": "4d5456f972cd8558",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "function 45",
+        "func": "// Assume msg.payload contains the data retrieved from Firebase\n\n\n// Extract the nested object (the first key's value)\n// Assume msg.payload contains the data retrieved from Firebase\nlet data = msg.payload;\n\n// Extract the nested object (the first key's value)\nlet userData = data[Object.keys(data)[0]];\n\n// Extract username and password\nlet username = userData.username;\nlet password = userData.pass;\nlet inputPasskey = flow.get('passkey');\n\n\nif (password === inputPasskey) {\n    msg.payload = { \"tab\": \"Device page\" };\n} else {\n    msg.payload = \"Login failed: Incorrect username or password\";\n}\n\nreturn msg;\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1acd62a30bbc3fc5",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "group": "49e795f06702a500",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "Login",
+        "format": "",
+        "layout": "col-center",
+        "className": "Heading",
+        "x": 130,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "e96deea96c52e360",
+        "type": "ui_ui_control",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "",
+        "events": "all",
+        "x": 160,
+        "y": 900,
+        "wires": [
+            [
+                "df7c41397a3f86ce"
+            ]
+        ]
+    },
+    {
+        "id": "737bf00051cc4f3a",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "group": "49e795f06702a500",
+        "order": 10,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "SignUp here",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "Sign",
+        "x": 150,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "70a9f748ab45537a",
+        "type": "ui_ui_control",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "",
+        "events": "all",
+        "x": 460,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3c5057bc4d52b1ad",
+        "type": "ui_button",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "SignUp",
+        "group": "49e795f06702a500",
+        "order": 11,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "SignUp",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "SignUp",
+        "icon": "",
+        "payload": "{ \"tab\": \"SignUp\" }",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "x": 320,
+        "y": 640,
+        "wires": [
+            [
+                "70a9f748ab45537a"
+            ]
+        ]
+    },
+    {
+        "id": "0e26e40031b7e02b",
+        "type": "ui_text",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "group": "161087bb31b9c3e0",
+        "order": 14,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "Login failed: Incorrect username or password",
+        "layout": "row-spread",
+        "className": "DEVICE",
+        "x": 1330,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "0d9895cd01482ab1",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "function 59",
+        "func": "// Assume msg.payload contains the data retrieved from Firebase\nlet data = flow.get(\"device\");\n\nif (data && Object.keys(data).length > 0) {\n    let userData = data[Object.keys(data)[0]];\n    let password = userData.pass;\n    let inputPasskey = flow.get('passkey');\n\n    if (password === inputPasskey) {\n         msg.payload = { \"tab\": \"Device page\" };\n       \n    } else {\n     msg.payload = \"Login failed: Incorrect username or password\";\n        \n    }\n} else {\n    // Handle null or empty Firebase result\n    msg.payload = \"Login failed: Incorrect username or password\";\n  \n}\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 780,
+        "wires": [
+            [
+                "e96deea96c52e360",
+                "cd559e3c39cb4bf4",
+                "46371274120d67f5"
+            ]
+        ]
+    },
+    {
+        "id": "cd559e3c39cb4bf4",
+        "type": "function",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "function 60",
+        "func": "if (msg.payload == \"Login failed: Incorrect username or password\")\n{\n    msg.payload =\"visible\";\n}\nelse if (msg.payload == { \"tab\": \"Login\" }){\n    msg.payload = \"hidden\";\n}\nelse {\n    msg.payload = \"hidden\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 780,
+        "wires": [
+            [
+                "eaab547787905068"
+            ]
+        ]
+    },
+    {
+        "id": "eaab547787905068",
+        "type": "ui_template",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "group": "161087bb31b9c3e0",
+        "name": "",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "format": "<style>\n    .DEVICE{\n        visibility: {{msg.payload}};\n    }\n </style>",
+        "storeOutMessages": false,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1360,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9df446c8b08333eb",
+        "type": "change",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "device",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 880,
+        "y": 640,
+        "wires": [
+            [
+                "0d9895cd01482ab1"
+            ]
+        ]
+    },
+    {
+        "id": "59279e38e985a463",
+        "type": "link in",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "link in 1",
+        "links": [
+            "1d0b0da7cea6acb6",
+            "e96de78d2042f475"
+        ],
+        "x": 1035,
+        "y": 740,
+        "wires": [
+            [
+                "cd559e3c39cb4bf4"
+            ]
+        ]
+    },
+    {
+        "id": "46371274120d67f5",
+        "type": "link out",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "link out 2",
+        "mode": "link",
+        "links": [
+            "298187befd602f96"
+        ],
+        "x": 1095,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "df7c41397a3f86ce",
+        "type": "link out",
+        "z": "b96138cdeecf7465",
+        "g": "0cfb7877eed3fbab",
+        "name": "link out 3",
+        "mode": "link",
+        "links": [
+            "505d715cfa4c50d0",
+            "beb54d856c371fc4"
+        ],
+        "x": 265,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "f2e20389eaa44f32",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "75b63678b3b7b670",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "01e266e0d6782e84",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "75b63678b3b7b670",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "e78f049ec222fbb2",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "75b63678b3b7b670",
+        "order": 4,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "f030d76ab4c0ccb5",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "75b63678b3b7b670",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "64998f3b5a11b09a",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "75b63678b3b7b670",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "38637e9fd08b79fe",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "4eed4b7b5e897782",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "097f08874b821a40",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "4eed4b7b5e897782",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "012199d412536a22",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "4eed4b7b5e897782",
+        "order": 4,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "f320d86004a4522e",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "4eed4b7b5e897782",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "c0b1ab3ad5d5289d",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "4eed4b7b5e897782",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "19378e4ce5afbbe4",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "49e795f06702a500",
+        "order": 1,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "42c4cb54ebb53f6e",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "49e795f06702a500",
+        "order": 3,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "97b1a8c1a610d5cc",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "49e795f06702a500",
+        "order": 4,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "cc13b28a3c5905ad",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "49e795f06702a500",
+        "order": 6,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "01eaf2819018311a",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "49e795f06702a500",
+        "order": 7,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "0b230121f0c55df5",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "49e795f06702a500",
+        "order": 9,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "93397ba234b124a0",
+        "type": "ui_spacer",
+        "z": "b96138cdeecf7465",
+        "name": "spacer",
+        "group": "49e795f06702a500",
+        "order": 1,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "8e5e18a9.aa097",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "42a4c2f7b5412d81",
+        "type": "ui_group",
+        "name": "pH value",
+        "tab": "3ccb4c2d3124da9d",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ec7237d744241126",
+        "type": "ui_group",
+        "name": "Moisture value",
+        "tab": "3ccb4c2d3124da9d",
+        "order": 2,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "bd00c3973736735b",
+        "type": "ui_group",
+        "name": "Nitrogen Value",
+        "tab": "3ccb4c2d3124da9d",
+        "order": 3,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "75b63678b3b7b670",
+        "type": "ui_group",
+        "name": "Phosphorous Value",
+        "tab": "3ccb4c2d3124da9d",
+        "order": 4,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4eed4b7b5e897782",
+        "type": "ui_group",
+        "name": "Potassium Value",
+        "tab": "3ccb4c2d3124da9d",
+        "order": 5,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8141ef4936691b56",
+        "type": "ui_group",
+        "name": "Standard Data Comparisons",
+        "tab": "3ccb4c2d3124da9d",
+        "order": 6,
+        "disp": true,
+        "width": 24,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "deea738e15430b6e",
+        "type": "ui_group",
+        "name": "SignUp",
+        "tab": "6f9ec4e43f990ee3",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "da48af0e9ac609b0",
+        "type": "database-config",
+        "name": "Soil data",
+        "authType": "privateKey",
+        "claims": {},
+        "createUser": false,
+        "useClaims": false
+    },
+    {
+        "id": "49e795f06702a500",
+        "type": "ui_group",
+        "name": "LOGIN",
+        "tab": "31cb5c5650cbdc41",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "2eb2f5abb58f0254",
+        "type": "database-config",
+        "name": "My Database",
+        "authType": "privateKey",
+        "claims": {},
+        "createUser": false,
+        "useClaims": false
+    },
+    {
+        "id": "161087bb31b9c3e0",
+        "type": "ui_group",
+        "name": "Login",
+        "tab": "60b051e5389ab5ea",
+        "order": 1,
+        "disp": false,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3ccb4c2d3124da9d",
+        "type": "ui_tab",
+        "name": "Soil health Monitoring",
+        "icon": "dashboard",
+        "order": 20,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6f9ec4e43f990ee3",
+        "type": "ui_tab",
+        "name": "Signup_Soil",
+        "icon": "dashboard",
+        "order": 22,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "31cb5c5650cbdc41",
+        "type": "ui_tab",
+        "name": "Login_Soil",
+        "icon": "dashboard",
+        "order": 21,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "60b051e5389ab5ea",
+        "type": "ui_tab",
+        "name": "Login",
+        "icon": "login",
+        "order": 11,
+        "disabled": false,
+        "hidden": false
+    }
+]

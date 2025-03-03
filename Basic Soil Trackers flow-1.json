@@ -1,0 +1,852 @@
+[
+    {
+        "id": "37b7bd0b995ffa0a",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a74dce618aaa11d8",
+        "type": "mqtt in",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "topic": "sense/soil",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "2c7d041410152ef6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6919911f66bb8a08",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "soil parameters",
+        "func": "\n/*var soilpar = msg.payload;\nvar values = soilpar.split(\"-\");\nmsg.payload = {\n    Ph: parseFloat(values[0]),\n    Moisture: parseFloat(values[1]),\n    N: parseFloat(values[2]),\n    P:parseFloat(values[3]),\n    K: parseFloat(values[4])\n};\n\nreturn msg;*/\nconst inputPayload = msg.payload;\n\n// Extract the \"soil\" value from the JSON object\nconst Soilvalue = inputPayload[\"Soil-moisture\"];\nconst SoilpH = inputPayload[\"Soil-pH\"];\nconst SoilNitrogen= inputPayload[\"Soil-Nitro\"];\nconst SoilPhosphorous = inputPayload[\"Soil-Phosphorous\"];\nconst SoilPotassium = inputPayload[\"Soil-Potassium\"]\n// Create a new object with the extracted values\nmsg.payload = {\n    pH: parseFloat(SoilpH),\n    moisture: parseFloat(Soilvalue),\n    N: parseFloat(SoilNitrogen),\n    P: parseFloat(SoilPhosphorous),\n    K:parseFloat(SoilPotassium)\n};\n// Return the modified message\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 160,
+        "wires": [
+            [
+                "589450ade0ea2e89",
+                "524149381112d22c",
+                "b211ea4aab8002cc",
+                "4e5627b28dfa9f04",
+                "fc383c363b5ce53d"
+            ]
+        ]
+    },
+    {
+        "id": "54668735af45e1bf",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Ph comparison",
+        "func": "var pH= msg.payload;\n\nif (pH >= 6.5 && pH <= 7.5) {\n    msg.payload = \"Soil is having optimum pH range for optimum plant growth\"\n\n}\nelse if (pH<= 6.5 && pH >= 5.5) {\n    msg.payload = \"slightly acidic\"\n}\nelse if (pH < 5.5 &&pH >= 5.0) {\n    msg.payload = \"Moderately acidic\"\n}\nelse if (pH < 5.0 && pH >= 4.5) {\n    msg.payload = \"Strongly acidic\"\n}\nelse if (pH < 4.5) {\n    msg.payload = \"Extremely acidic\"\n}\nelse if (pH> 7.5 && pH <= 8.0) {\n    msg.payload = \"Slightly alkanine\"\n}\nelse if (pH > 8.0 && pH <= 8.5) {\n    msg.payload = \"Medium alkanine\"\n}\nelse {\n    msg.payload = \"Strongly alkaline\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 40,
+        "wires": [
+            [
+                "ed1e19929eee68a2",
+                "636996add6b557e1"
+            ]
+        ]
+    },
+    {
+        "id": "ed1e19929eee68a2",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "pH comparison",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "636996add6b557e1",
+        "type": "ui_text",
+        "z": "37b7bd0b995ffa0a",
+        "group": "99f5c03d283129df",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "pH:-",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1010,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "d67f4217e3ab3782",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Moisture comparison",
+        "func": "var moisture= msg.payload;\n\nif (moisture >= 80 && moisture <= 100) {\n    msg.payload = \"No irrigation is required\"\n}\nelse if (moisture >= 60 && moisture < 80) {\n    msg.payload = \" Irrigation is required\"\n}\nelse if (moisture < 60) {\n    msg.payload = \" Dangerously low moisture\"\n}\nelse {\n    msg.payload = \"Highly irrigated plants can get destroyed\"\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 180,
+        "wires": [
+            [
+                "1a26a50cb248a1be",
+                "01f932aef3e856c8"
+            ]
+        ]
+    },
+    {
+        "id": "1a26a50cb248a1be",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Moisture comparison",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1180,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "01f932aef3e856c8",
+        "type": "ui_text",
+        "z": "37b7bd0b995ffa0a",
+        "group": "d7f4dec45e5f7980",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Moisture:-",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1000,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "524149381112d22c",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Nitrogen value",
+        "func": "msg.payload= msg.payload.N;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 220,
+        "wires": [
+            [
+                "59a48b2c201443f7",
+                "684d847f2ad8fd36"
+            ]
+        ]
+    },
+    {
+        "id": "b211ea4aab8002cc",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Phosphorous value",
+        "func": "msg.payload=msg.payload.P;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 280,
+        "wires": [
+            [
+                "be9fdb07e82bb517",
+                "4ddd551d69ab955a"
+            ]
+        ]
+    },
+    {
+        "id": "589450ade0ea2e89",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Potassium value",
+        "func": "msg.payload=msg.payload.K;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 380,
+        "wires": [
+            [
+                "a2542f2dfc8470bb",
+                "748cd1fcb8e11343"
+            ]
+        ]
+    },
+    {
+        "id": "59a48b2c201443f7",
+        "type": "ui_gauge",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "group": "fdcef4501717771c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Nitrogen",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 820,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "be9fdb07e82bb517",
+        "type": "ui_gauge",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "group": "fdcef4501717771c",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Phosphorous",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 810,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "0319c92cd6f7e389",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Nitrogen comparison",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "dfe1a1e87d654292",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Potassium comparsion",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a2542f2dfc8470bb",
+        "type": "ui_gauge",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "group": "fdcef4501717771c",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Potassium",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 850,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "fc383c363b5ce53d",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Ph value",
+        "func": "\nmsg.payload=msg.payload.pH;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 60,
+        "wires": [
+            [
+                "07c814b54270e3e6",
+                "54668735af45e1bf"
+            ]
+        ]
+    },
+    {
+        "id": "07c814b54270e3e6",
+        "type": "ui_gauge",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "group": "99f5c03d283129df",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Ph reading",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "14",
+        "colors": [
+            "#e65a41",
+            "#02ca7d",
+            "#2ca9c9"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 650,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4e5627b28dfa9f04",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Moisture value",
+        "func": "msg.payload=msg.payload.moisture;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 160,
+        "wires": [
+            [
+                "06635bcbb83faed5",
+                "d67f4217e3ab3782"
+            ]
+        ]
+    },
+    {
+        "id": "06635bcbb83faed5",
+        "type": "ui_gauge",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "group": "d7f4dec45e5f7980",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Moisture",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "200",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 760,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "684d847f2ad8fd36",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Nitrogen comparison",
+        "func": "var N= msg.payload;\nif(N>=25 && N<=50)\n{\n    msg.payload=\"Nitrogen is optimum in the soil\";\n}\nelse if(N<25)\n{\n    msg.payload=\"Nitrogen is defecient\";\n}\nelse \n{\n    msg.payload=\"Nitrogen is excessive in the soil\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 220,
+        "wires": [
+            [
+                "0319c92cd6f7e389",
+                "c5a84a7fbf10b656"
+            ]
+        ]
+    },
+    {
+        "id": "c5a84a7fbf10b656",
+        "type": "ui_text",
+        "z": "37b7bd0b995ffa0a",
+        "group": "fdcef4501717771c",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "N:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1030,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "4ddd551d69ab955a",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Phosphorous comparison",
+        "func": "var P= msg.payload;\nif(P>=50 && P<=70)\n{\n    msg.payload=\"Phosphorous is optimum in soil no fertillizer is required\";\n}\nelse if(P<50)\n{\n    msg.payload =\"Phosphorous is low and fertillizer can be applied\";\n}\nelse {\n    msg.payload=\"Excessive Phosphorous reduces plant's ability to take up nutrient\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 360,
+        "wires": [
+            [
+                "f3df0214e3bfdcfa",
+                "76a1c01ffc6b99b3"
+            ]
+        ]
+    },
+    {
+        "id": "f3df0214e3bfdcfa",
+        "type": "ui_text",
+        "z": "37b7bd0b995ffa0a",
+        "group": "fdcef4501717771c",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "P:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1030,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "76a1c01ffc6b99b3",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Phosphorous comparison",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1090,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "748cd1fcb8e11343",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "Potassium comparison",
+        "func": "var K= msg.payload;\nif(K>=50 && K<=70)\n{\n    msg.payload=\"Potassium is optimum in the soil\";\n}\nelse if(K<50)\n{\n    msg.payload=\"Potassium is lower in soil , soil requires application of fertillizer\";\n\n}\nelse {\n    msg.payload=\"Potassium is having excessive potasium\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 400,
+        "wires": [
+            [
+                "dfe1a1e87d654292",
+                "44ffcf85fd157d09"
+            ]
+        ]
+    },
+    {
+        "id": "44ffcf85fd157d09",
+        "type": "ui_text",
+        "z": "37b7bd0b995ffa0a",
+        "group": "fdcef4501717771c",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "K:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1030,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "e38b58cfa2fe97fa",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "14f2f70af495bf08",
+        "type": "mqtt in",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "topic": "mqtt/p",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "2c7d041410152ef6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 840,
+        "wires": [
+            [
+                "2d1ff9db9ed1591c"
+            ]
+        ]
+    },
+    {
+        "id": "2d1ff9db9ed1591c",
+        "type": "ui_gauge",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "group": "d7f4dec45e5f7980",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "gauge",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 450,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "ec512c65e9154dd7",
+        "type": "ui_text",
+        "z": "37b7bd0b995ffa0a",
+        "group": "d3bd90ae926fbebb",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "pH",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 630,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "44c1c547aee39a9f",
+        "type": "ui_gauge",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "group": "d3bd90ae926fbebb",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "pH",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "14",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 630,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "69feee708d35c381",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "function 13",
+        "func": "// Get the input message payload\nconst inputPayload = msg.payload;\n\n// Extract the \"soil\" value from the JSON object\nconst Soilvalue = inputPayload[\"Soil-moisture\"];\nconst SoilpH = inputPayload[\"Soil-pH\"];\n\n// Create a new object with the extracted values\nmsg.payload = {pH: parseFloat(SoilpH),\n    moisture: parseFloat(Soilvalue)\n};\n// Return the modified message\nreturn msg;\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 600,
+        "wires": [
+            [
+                "d5862a56626ccabd"
+            ]
+        ]
+    },
+    {
+        "id": "d5862a56626ccabd",
+        "type": "function",
+        "z": "37b7bd0b995ffa0a",
+        "name": "function 14",
+        "func": "msg.payload = msg.payload.pH;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 540,
+        "wires": [
+            [
+                "44c1c547aee39a9f",
+                "ec512c65e9154dd7",
+                "810bfa71cf4eec34"
+            ]
+        ]
+    },
+    {
+        "id": "810bfa71cf4eec34",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "81fb21dcf771563d",
+        "type": "inject",
+        "z": "37b7bd0b995ffa0a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "12-3-2-4",
+        "payload": "",
+        "payloadType": "num",
+        "x": 80,
+        "y": 320,
+        "wires": [
+            [
+                "6919911f66bb8a08",
+                "e38b58cfa2fe97fa"
+            ]
+        ]
+    },
+    {
+        "id": "f918cf59e7b24446",
+        "type": "debug",
+        "z": "37b7bd0b995ffa0a",
+        "name": "debug 28",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "2c7d041410152ef6",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.mqttdashboard.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "99f5c03d283129df",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "9acfb71e9e75f94b",
+        "order": 1,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "d7f4dec45e5f7980",
+        "type": "ui_group",
+        "name": "Group 2",
+        "tab": "9acfb71e9e75f94b",
+        "order": 2,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "fdcef4501717771c",
+        "type": "ui_group",
+        "name": "Group 3",
+        "tab": "9acfb71e9e75f94b",
+        "order": 3,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "d3bd90ae926fbebb",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "d4e88be5d1f479a1",
+        "order": 1,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "9acfb71e9e75f94b",
+        "type": "ui_tab",
+        "name": "Tab 2",
+        "icon": "dashboard",
+        "order": 4
+    },
+    {
+        "id": "d4e88be5d1f479a1",
+        "type": "ui_tab",
+        "name": "Tab 3",
+        "icon": "dashboard",
+        "order": 5
+    }
+]
